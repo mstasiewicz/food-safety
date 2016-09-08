@@ -102,26 +102,26 @@ data$reason<- factor( data$reason, levels=levels(data$reason)[ order( table(data
 f1 <- ggplot(data, aes(x=reason, fill=recall_class)) + geom_bar()+  labs(x = "Reason for Recall", y = "Count of Recalls")#, title="Fig 1")
 f1 <-  f1 + theme_bw() + theme(axis.text.x=element_text(angle=50, vjust=0.5)) + scale_fill_discrete(name="Recall Class") + theme(legend.position=c(.9,.8)) 
 f1 
-ggsave(f1, file="outputs/F1-Hist of reason and class counts.pdf")
-ggsave(f1, file="outputs/F1-Hist of reason and class counts.jpg")
+ggsave(f1, file="outputs/F1-Hist of reason and class counts.pdf",h=6,w=8)
+ggsave(f1, file="outputs/F1-Hist of reason and class counts.jpg",h=6,w=8)
 f1_bw <- f1 +  scale_fill_grey(name="Recall Class")
 f1_bw
-ggsave(f1_bw, file="outputs/F1bw-Hist of reason and class counts.pdf")
-ggsave(f1_bw, file="outputs/F1bw-Hist of reason and class counts.jpg")
+ggsave(f1_bw, file="outputs/F1bw-Hist of reason and class counts.pdf",h=6,w=8)
+ggsave(f1_bw, file="outputs/F1bw-Hist of reason and class counts.jpg",h=6,w=8)
 
 #figure 2 - histograms####
 ds <- subset(data, select = c(recalled_log, recovered_log))
 dm <- melt(ds)
 levels(dm$variable) <- c("Product Recalled", "Product Recovered")
 dm$isZero <- dm$value == 0
-f2 <- ggplot(dm, aes(x=value, fill=isZero)) + geom_histogram(binwidth = 0.5) + labs(x="Product Recalled or Recovered [log10(pounds)]", y="Count of Recalls")#, title="Fig 2")
+f2 <- ggplot(dm, aes(x=value, fill=isZero)) + geom_histogram(binwidth = 0.5) + labs(x="Amount of Product Recalled or Recovered [log10(pounds)]", y="Count of Recalls")#, title="Fig 2")
 f2 <- f2 + facet_wrap( ~ variable, ncol = 1 ) + theme_bw() + theme(legend.position="none") #+ scale_fill_grey()
 f2
-ggsave(f2, file="outputs/F2-Hist of recall size.pdf")
-ggsave(f2, file="outputs/F2-Hist of recall size.jpg")
+ggsave(f2, file="outputs/F2-Hist of recall size.pdf",h=6,w=8)
+ggsave(f2, file="outputs/F2-Hist of recall size.jpg",h=6,w=8)
 f2_bw <- f2 + scale_fill_grey()
-ggsave(f2_bw, file="outputs/F2bw-Hist of recall size.pdf")
-ggsave(f2_bw, file="outputs/F2bw-Hist of recall size.jpg")
+ggsave(f2_bw, file="outputs/F2bw-Hist of recall size.pdf",h=6,w=8)
+ggsave(f2_bw, file="outputs/F2bw-Hist of recall size.jpg",h=6,w=8)
 
 #figure 3 - proportion recovered####
 data$recov_class <- "recovered <= 100%"
@@ -129,14 +129,14 @@ data$recov_class[ data$recovered_log == 0 ] <- "recovered = 0 lbs"
 data$recov_class[ data$Pr_recov_log > 0 ] <- "recovered > 100%"
 
 f3 <- ggplot(data=data, aes(x = Pr_recov_log, fill = recov_class)) + geom_histogram(binwidth = .25, right=T)
-f3 <- f3 + theme_bw() + labs(x = "Proportion of Product Recovered [log10(pounds)]", y = "Count of Recalls") + #, title="Fig 3") + 
+f3 <- f3 + theme_bw() + labs(x = "Proportion of Product Recovered [log10(recovered)-log10(recalled)]", y = "Count of Recalls") + #, title="Fig 3") + 
   theme(legend.position=c(.2,.85) ) + scale_fill_discrete(name="Recovery Category")
 f3
-ggsave(f3, file="outputs/F3-Hist of Pr recovered.pdf")
-ggsave(f3, file="outputs/F3-Hist of Pr recovered.jpg")
+ggsave(f3, file="outputs/F3-Hist of Pr recovered.pdf",h=6,w=8)
+ggsave(f3, file="outputs/F3-Hist of Pr recovered.jpg",h=6,w=8)
 f3_bw <- f3 + scale_fill_grey(name="Recovery Category")
-ggsave(f3_bw, file="outputs/F3bw-Hist of Pr recovered.pdf")
-ggsave(f3_bw, file="outputs/F3bw-Hist of Pr recovered.jpg")
+ggsave(f3_bw, file="outputs/F3bw-Hist of Pr recovered.pdf",h=6,w=8)
+ggsave(f3_bw, file="outputs/F3bw-Hist of Pr recovered.jpg",h=6,w=8)
 
 table(subset(data, !is.na(recovered_log) ,select=recov_class))
 summary(subset(data, recovered_log > 0, select="recovered_log"))
@@ -152,11 +152,11 @@ f4 <- f4 + geom_abline(slope = 1, intercept=0, color="black") +
   geom_abline(slope = mod$coefficients[2], intercept = mod$coefficients[1], color="grey") +
   theme(legend.position=c(.2,.85) ) + scale_color_discrete(name="Recovery Category")
 f4
-ggsave(f4, file="outputs/F4-Recov v Recalled.pdf")
-ggsave(f4, file="outputs/F4-Recov v Recalled.jpg")
+ggsave(f4, file="outputs/F4-Recov v Recalled.pdf",h=6,w=8)
+ggsave(f4, file="outputs/F4-Recov v Recalled.jpg",h=6,w=8)
 f4_bw <- f4 + scale_color_grey(name="Recovery Category")
-ggsave(f4_bw, file="outputs/F4bw-Recov v Recalled.pdf")
-ggsave(f4_bw, file="outputs/F4bw-Recov v Recalled.jpg")
+ggsave(f4_bw, file="outputs/F4bw-Recov v Recalled.pdf",h=6,w=8)
+ggsave(f4_bw, file="outputs/F4bw-Recov v Recalled.jpg",h=6,w=8)
 
 #figure 5 - Sizes by year####
 f5_rca <- ggplot( aes(x = factor(year), y = recalled_log) , data=data) + geom_boxplot(notch=T, size=T)+
@@ -169,7 +169,7 @@ f5_rcv <- ggplot( aes(x = factor(year), y = recovered_log) , data=data) + geom_b
   theme_bw() + labs(x = "", y = "Product Recovered [log10(pounds)]", title="B")
 f5_rcv
 f5_pr <- ggplot( aes(x = factor(year), y = Pr_recov_log) , data=data) + geom_boxplot(notch=T, size=T) +
-  theme_bw() + labs(x = "", y = "Proportion Recovered [log10(Recalled-Rocovered)]", title="C")
+  theme_bw() + labs(x = "", y = "Proportion Recovered [log10(Recov.)-log10(Recall.)]", title="C")
 f5_pr
 #pdf(file="outputs/f5 - Recalled.pdf", h=6, w=8); multiplot(f5a, f5b); dev.off()
 #pdf(file="outputs/f5 - Amts over time.pdf", h=16, w=8); multiplot(f5a, f5c, f5d, f5b); dev.off()
@@ -184,7 +184,7 @@ data$recalled_above_1E5 <- data$recalled > 1E4
 
 #lots of cool stuff to be done with weighting
 p <- ggplot(data, aes(x=factor(year))) + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-p + geom_bar() + labs(title = "Outbreaks > year") 
+p + geom_bar() + labs(title = "Recalls > year") 
 p <- ggplot() +  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 p + geom_bar(data = data, aes(x=factor(year))) 
 p + geom_bar(data = data, aes(x=factor(year), fill=factor(recalled_above_1E8)))
@@ -205,11 +205,11 @@ m <- melt(d, id="year")
 m$variable <- factor(m$variable)
 levels(m$variable) <- relevel(m$value, "abv6")
 p <- ggplot(data = m, aes(x = year, weight = value, fill = variable)) + theme_bw() + geom_bar(position="dodge")+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y = "Count of outbreaks above 1EX", title="Supp Fig 1")
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y = "Count of Recalls above 1EX", title="Supp Fig 1")
 p
 p <- ggplot(data = m, aes(x = year, weight = value, fill = variable)) + theme_bw() 
 p + geom_bar(position="identity", alpha = 0.5) + scale_fill_discrete()
-theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y = "Count of outbreaks above 1EX", title="Supp Fig 1")
+theme(axis.text.x = element_text(angle = 90, hjust = 1)) + labs(y = "Count of Recalls above 1EX", title="Supp Fig 1")
 p
 dt <- data.frame(thr=abv6, year = names(abv6))
 dt2 <- data.frame(thr=abv7, year = names(abv7))
@@ -219,15 +219,15 @@ p <- ggplot(NULL, aes(year,thr)) + theme_bw()
 pf <- p + geom_bar( aes(fill="abv6") , data=dt , stat="identity") +
   geom_bar( aes(fill="abv7") , data=dt2 , stat="identity") +
   geom_bar( aes(fill="abv8") , data=dt3 , stat="identity") 
-pf <- pf + labs(y = "Count of outbreaks above threshold size", x = "year")#, title="Supp Fig 1")
+pf <- pf + labs(y = "Count of Recalls Above Threshold Size", x = "Year")#, title="Supp Fig 1")
 pf <- pf +  scale_fill_brewer(name="Threshold [pounds]", labels=c("10^6","10^7","10^8")) + theme(legend.position=c(.1,.85) )
 pf
-ggsave(pf, file = "outputs/F6 - rare events.pdf") #don't appear to be increasing
-ggsave(pf, file = "outputs/F6 - rare events.jpg") #don't appear to be increasing
+ggsave(pf, file = "outputs/F6 - rare events.pdf",h=6,w=9)
+ggsave(pf, file = "outputs/F6 - rare events.jpg",h=6,w=9)
 pf_bw <- pf + scale_fill_grey(name="Threshold [pounds]", labels=c("10^6","10^7","10^8"), start=0.8, end = 0.2)
 pf_bw
-ggsave(pf_bw, file = "outputs/F6bw - rare events.pdf") #don't appear to be increasing
-ggsave(pf_bw, file = "outputs/F6bw - rare events.jpg") #don't appear to be increasing
+ggsave(pf_bw, file = "outputs/F6bw - rare events.pdf",h=6,w=9)
+ggsave(pf_bw, file = "outputs/F6bw - rare events.jpg",h=6,w=9)
 
 #table 1 - Univariate stats####
 #source("C:/Users/mstasie.UOFI/Google Drive/r/univariate statistics.r")
@@ -448,7 +448,7 @@ p <- p + geom_line(aes(linetype=Commodity)) + scale_linetype_manual(values = c(2
 p <- p %+% subset(pm, as.vector(Year)>1993&as.vector(Year)<2016)
 figS <- p + labs(x="Year", y="U.S. FSIS Inspected Production [Billion Pounds]", title="E") + theme_bw()
 figS <- figS + theme(legend.position = c(.9, .7))
-figS# + geom_line(linetype=Commodity)
+figS  #+ geom_line(linetype=Commodity)
 ggsave(figS, file="outputs/FigS-US Meat Production.pdf")
 ggsave(figS, file="outputs/FigS-US Meat Production.jpg")
 ps <- subset(pm, as.vector(Year)>1993&as.vector(Year)<2016)
